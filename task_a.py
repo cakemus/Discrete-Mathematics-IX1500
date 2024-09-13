@@ -5,6 +5,11 @@ import matplotlib.pyplot as plt
 start_point = (0, 3)
 end_point = (7, 2)
 
+def L(m, n):
+    return (m+1, n-1)
+def U(m, n):
+    return (m+1, n+1)
+
 def binomial_coefficient(n, k):
     return math.factorial(n) / (math.factorial(k) * math.factorial(n - k))
 
@@ -28,15 +33,55 @@ def UL_combinations():
     
     return unique_paths
 
+#makes UL path into x,y path
+def ul_to_coords(path):
+    """
+    Simulates the path based on the sequence of moves ('U' and 'L') 
+    and returns the list of coordinates.
+    """
+    # Start at (0, 3)
+    x, y = 0, 3
+    coordinates = [(x, y)]  # Start coordinate
+    
+    # Apply each move in the path
+    for move in path:
+        if move == 'U':
+            x, y = U(x, y)  # Use U function to move up
+        elif move == 'L':
+            x, y = L(x, y)  # Use L function to move down
+        coordinates.append((x, y))  # Add the new coordinates
+    
+    return coordinates
+
+def coord_paths(combinations):
+    # Use list comprehension to simulate paths and check if they cross (3,0) or (5,0)
+    return [ul_to_coords(path) for path in combinations]
+
+def plot_paths(paths):
+    plt.figure(figsize=(10, 6))  # Set the figure size
+
+    # Plot each path
+    for path in paths:
+        x_values, y_values = zip(*path)  # Separate x and y coordinates
+        plt.plot(x_values, y_values, marker='o')
+
+    # Configure the plot's appearance
+    plt.title("Valid paths not crossing the x-axis")
+    plt.xlabel("X-axis")
+    plt.ylabel("Y-axis")
+    plt.grid(True)
+    plt.show()  # Display the plot
+
 total_paths = calc_total_paths(start_point, end_point)
 print(f"Total paths from point {start_point} to point {end_point}: {total_paths}")
 unique_paths = UL_combinations()
+path_coords = coord_paths(unique_paths)
 
 
-sorted_paths = [''.join(path) for path in unique_paths]
-sorted_paths.sort()
-n = 0
-for path in sorted_paths:
-    path_str = ''.join(path)
-    n += 1    
-    print(f"{path_str} {n}")
+n = 1  
+for path in path_coords:
+    path_str = " -> ".join([f"({x},{y})" for x, y in path])
+    print(f"{path_str} n = {n}")
+    n += 1
+
+plot_paths(path_coords)

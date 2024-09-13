@@ -32,7 +32,8 @@ def ul_combinations():
     unique_paths = set(itertools.permutations(moves))  # Generate all unique permutations
     
     return unique_paths
-
+ 
+#makes UL path into x,y path
 def ul_to_coords(path):
     """
     Simulates the path based on the sequence of moves ('U' and 'L') 
@@ -56,11 +57,26 @@ def isolate_paths(combinations):
     # Use list comprehension to simulate paths and check if they cross (3,0) or (5,0)
     return [ul_to_coords(path) for path in combinations if (3, 0) in ul_to_coords(path) or (5, 0) in ul_to_coords(path)]
 
+def plot_paths(paths):
+    plt.figure(figsize=(10, 6))  # Set the figure size
+
+    # Plot each path
+    for path in paths:
+        x_values, y_values = zip(*path)  # Separate x and y coordinates
+        plt.plot(x_values, y_values, marker='o')
+
+    # Configure the plot's appearance
+    plt.title("Valid paths not crossing the x-axis")
+    plt.xlabel("X-axis")
+    plt.ylabel("Y-axis")
+    plt.grid(True)
+    plt.show()  # Display the plot
+
 total_paths = calc_total_paths(start_point, end_point)
 #andre's reflection principle
-reflection = (start_point[0], -start_point[1])
-#using reflection as start point we calculate total nr of points that do reach x-axis
-valid_paths = calc_total_paths(reflection, end_point)
+reflection = (end_point[0], -end_point[1])
+#using reflection as end point we calculate total nr of points that do reach x-axis
+valid_paths = calc_total_paths(start_point, reflection)
 invalid_paths = total_paths - valid_paths
 ul_paths = ul_combinations()
 isolated_paths = isolate_paths(ul_paths)
@@ -69,5 +85,10 @@ print(f"Total paths from point {start_point} to point {end_point}: {total_paths}
 print(f"Number of invalid paths: {invalid_paths}")
 print(f"Number of valid paths: {valid_paths}")
 
+n = 1  
 for path in isolated_paths:
-    print(" -> ".join([f"({x},{y})" for x, y in path]))
+    path_str = " -> ".join([f"({x},{y})" for x, y in path])
+    print(f"{path_str} n = {n}")
+    n += 1
+
+plot_paths(isolated_paths)

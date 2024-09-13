@@ -1,6 +1,4 @@
 import math
-import itertools
-import matplotlib.pyplot as plt
 
 start_point = (7, 6)
 end_point = (20, 5)
@@ -29,7 +27,7 @@ def calc_total_paths(start_point, end_point):
 
 def ul_combinations():
     moves = ['U'] * 6 + ['L'] * 7  # 3 U's and 4 L's
-    unique_paths = set(itertools.permutations(moves))  # Generate all unique permutations
+    unique_paths = set(itertools.permutations(moves))  #generate all unique permutations
     
     return unique_paths
 
@@ -55,9 +53,9 @@ def ul_to_coords(path):
 
 total_paths = calc_total_paths(start_point, end_point)
 #andre's reflection principle
-reflection = (start_point[0], -start_point[1])
-#using reflection as start point we calculate total nr of points that do reach x-axis
-invalid_paths = calc_total_paths(reflection, end_point)
+reflection = (end_point[0], -end_point[1])
+#using reflection as end point we calculate total nr of points that do reach x-axis
+invalid_paths = calc_total_paths(start_point, reflection)
 valid_paths = total_paths - invalid_paths
 
 

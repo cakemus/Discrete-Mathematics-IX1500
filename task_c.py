@@ -74,9 +74,9 @@ def plot_paths(paths):
 
 total_paths = calc_total_paths(start_point, end_point)
 #andre's reflection principle
-reflection = (start_point[0], -start_point[1])
-#using reflection as start point we calculate total nr of points that do reach x-axis
-invalid_paths = calc_total_paths(reflection, end_point)
+reflection = (end_point[0], -end_point[1])
+#using reflection as end point we calculate total nr of points that do reach x-axis
+invalid_paths = calc_total_paths(start_point, reflection)
 valid_paths = total_paths - invalid_paths
 ul_paths = ul_combinations()
 isolated_paths = isolate_paths(ul_paths)
